@@ -12,7 +12,8 @@ import AuthLayout from "./AuthLayout"
 import Input from "./Header/Input"
 import Button from "./Button"
 import Select from "./Select"
+import Loader from "./Loader"
 
 
-export { Header, Footer, Logo, LogoutBtn, Container, RTE, Signup, Login, PostForm, PostCard, AuthLayout, Input, Button, Select }
+export { Header, Footer, Logo, LogoutBtn, Container, RTE, Signup, Login, PostForm, PostCard, AuthLayout, Input, Button, Select, Loader }
 
