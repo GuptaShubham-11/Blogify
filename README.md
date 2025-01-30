@@ -22,7 +22,7 @@ Blogify is a simple, user-friendly blogging platform built using React and Appwr
 ![Post Page](./ScreenshortsOfBlogify/AddPost.jpeg)
 
 ### Mobile View (Sidebar Navigation)
-![Mobile View](./ScreenshortsOfBlogify/MobileView.jpeg)
+![Mobile View](./ScreenshortsOfBlogify/Mobile.jpeg)
 
 ## Technologies Used
 
