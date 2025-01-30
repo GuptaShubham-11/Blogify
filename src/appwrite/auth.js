@@ -5,19 +5,19 @@ export class AuthService {
     client = new Client()
     account;
 
-    constructor(){
+    constructor() {
         this.client
             .setEndpoint(conf.appwriteUrl)
             .setProject(conf.appwriteProjectId);
         this.account = new Account(this.client);
     }
 
-    async createAccount({email, password, name}){
+    async createAccount({ email, password, name }) {
         try {
             const userAccount = await this.account.create(ID.unique(), email, password, name);
             if (userAccount) {
                 // call another method
-                return this.login({email, password});
+                return this.login({ email, password });
             } else {
                 return userAccount;
             }
@@ -26,32 +26,32 @@ export class AuthService {
         }
     }
 
-    async login({email, password}){
+    async login({ email, password }) {
         try {
             return await this.account.createEmailPasswordSession(email, password);
         } catch (error) {
-            console.log("login :: error",error);
+            // console.log("login :: error",error);
             throw error;
         }
     }
 
-    async getCurrentUser(){
+    async getCurrentUser() {
         try {
             return await this.account.get();
         } catch (error) {
-            console.log("getCurrentUser :: Error", error);
+            // console.log("getCurrentUser :: Error", error);
             // throw error;
             return null;
         }
 
     }
 
-    async logout(){
+    async logout() {
         try {
             return await this.account.deleteSessions();
         } catch (error) {
-            console.log("logout :: Error", error);
-            // throw error;
+            // console.log("logout :: Error", error);
+            throw error;
         }
 
         return null;

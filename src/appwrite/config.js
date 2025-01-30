@@ -29,7 +29,7 @@ export class Service {
                 }
             );
         } catch (error) {
-            console.log("createPost :: Error", error)
+            // console.log("createPost :: Error", error)
         }
     }
 
@@ -48,7 +48,7 @@ export class Service {
             );
 
         } catch (error) {
-            console.log("updatePost :: Error", error)
+            // console.log("updatePost :: Error", error)
         }
     }
 
@@ -61,12 +61,12 @@ export class Service {
             );
             return true;
         } catch (error) {
-            console.log("deletePost :: Error", error)
+            // console.log("deletePost :: Error", error)
         }
         return false;
     }
 
-    async getPost(slug){
+    async getPost(slug) {
         try {
             return await this.databases.getDocument(
                 conf.appwriteDatabaseId,
@@ -74,12 +74,12 @@ export class Service {
                 slug
             );
         } catch (error) {
-            console.log("getPost :: Error", error)
+            // console.log("getPost :: Error", error)
         }
         return false;
     }
 
-    async getPosts(queries = [Query.equal("status", "active")]){
+    async getPosts(queries = [Query.equal("status", "active")]) {
         try {
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
@@ -87,7 +87,7 @@ export class Service {
                 queries
             );
         } catch (error) {
-            console.log("allPost :: Error", error)
+            // console.log("allPost :: Error", error)
         }
     }
 
@@ -101,12 +101,12 @@ export class Service {
                 file
             );
         } catch (error) {
-            console.log("uploadFile :: Error", error)
+            // console.log("uploadFile :: Error", error)
             return false;
         }
     }
 
-    async deleteFile(fileId){
+    async deleteFile(fileId) {
         try {
             await this.bucket.deleteFile(
                 conf.appwriteBucketId,
@@ -114,12 +114,12 @@ export class Service {
             );
             return true;
         } catch (error) {
-            console.log("deleteFile :: Error", error)
+            // console.log("deleteFile :: Error", error)
             return false;
         }
     }
 
-    getFilePreview(fileId){
+    getFilePreview(fileId) {
         return this.bucket.getFilePreview(
             conf.appwriteBucketId,
             fileId
