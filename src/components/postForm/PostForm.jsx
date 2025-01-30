@@ -17,14 +17,25 @@ export default function PostForm({ post }) {
 
     const navigate = useNavigate();
     const userData = useSelector((state) => state.auth.userData);
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const [fileError, setFileError] = useState("");
 
+    // Submit handler: Create or Update a Post
     const submit = async (data) => {
-        setLoading(true)
+        setLoading(true);
         try {
-            if (post) {
-                const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null;
+            let file;
+            if (data.image?.[0]) {
+                if (!["image/png", "image/jpg", "image/jpeg", "image/gif"].includes(data.image[0].type)) {
+                    setFileError("Only image files (PNG, JPG, JPEG, GIF) are allowed.");
+                    setLoading(false);
+                    return;
+                }
+                file = await appwriteService.uploadFile(data.image[0]);
+            }
 
+            if (post) {
+                // If post exists, update it
                 if (file) {
                     appwriteService.deleteFile(post.featuredImage);
                 }
@@ -38,8 +49,7 @@ export default function PostForm({ post }) {
                     navigate(`/post/${dbPost.$id}`);
                 }
             } else {
-                const file = await appwriteService.uploadFile(data.image[0]);
-
+                // If post doesn't exist, create a new one
                 if (file) {
                     const fileId = file.$id;
                     data.featuredImage = fileId;
@@ -51,12 +61,13 @@ export default function PostForm({ post }) {
                 }
             }
         } catch (error) {
-            console.log("PostForm :: Error ", error)
+            // console.log("PostForm :: Error ", error);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     };
 
+    // Slug transformation: Converts title to a URL-friendly slug
     const slugTransform = useCallback((value) => {
         if (value && typeof value === "string")
             return value
@@ -82,7 +93,8 @@ export default function PostForm({ post }) {
         <Loader />
     ) : (
         <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-            <div className="w-2/3 px-2">
+            {/* Left Section (Title, Slug, Content) */}
+            <div className="w-full md:w-2/3 px-4 mb-4">
                 <Input
                     label="Title :"
                     placeholder="Title"
@@ -100,14 +112,18 @@ export default function PostForm({ post }) {
                 />
                 <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
             </div>
-            <div className="w-1/3 px-2">
+
+            {/* Right Section (Image, Status, Submit) */}
+            <div className="w-full md:w-1/3 px-4">
                 <Input
                     label="Featured Image :"
                     type="file"
                     className="mb-4"
                     accept="image/png, image/jpg, image/jpeg, image/gif"
                     {...register("image", { required: !post })}
+                    aria-label="Upload featured image"
                 />
+                {fileError && <p className="text-red-500 text-sm mb-4">{fileError}</p>}
                 {post && (
                     <div className="w-full mb-4">
                         <img
@@ -122,11 +138,12 @@ export default function PostForm({ post }) {
                     label="Status"
                     className="mb-4"
                     {...register("status", { required: true })}
+                    aria-label="Select post status"
                 />
                 <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
                     {post ? "Update" : "Submit"}
                 </Button>
             </div>
         </form>
-    )
+    );
 }
