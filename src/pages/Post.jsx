@@ -27,12 +27,14 @@ export default function Post() {
                         setError("Post not found");
                     }
                 })
-                .catch((err) => setError("Failed to load post"))
+                .catch(() => setError("Failed to load post"))
                 .finally(() => setLoading(false));
         } else {
             navigate("/");
         }
     }, [slug, navigate]);
+
+
 
     const deletePost = () => {
         appwriteService.deletePost(post.$id).then((status) => {
@@ -43,8 +45,8 @@ export default function Post() {
         });
     };
 
-    if (loading) return <Loader />; // Using a Loader component instead of text
-    if (error) return <div className="text-red-500 text-center">{error}</div>; // Styling error
+    if (loading) return <Loader />;
+    if (error) return <div className="text-red-500 text-center">{error}</div>;
 
     return post ? (
         <div className="py-8">

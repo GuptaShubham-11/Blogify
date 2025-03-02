@@ -4,26 +4,47 @@ import { Container, PostCard } from "../components";
 
 function Home() {
     const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        setLoading(true);
         appwriteService.getPosts().then((posts) => {
+            setLoading(false);
             if (posts) {
                 setPosts(posts.documents);
             }
         });
     }, []);
 
-    if (posts.length === 0) {
+    if (loading) {
         return (
             <div className="w-full py-12 flex justify-center items-center bg-background">
                 <Container>
                     <div className="text-center">
                         <h1 className="text-2xl font-bold text-primary">
-                            Please Login or Signup to read posts 😊.
+                            Loading posts...
                         </h1>
                     </div>
                 </Container>
             </div>
+        );
+    }
+
+    if (posts.length === 0) {
+        return (
+            <div className="w-full py-20 flex justify-center items-center bg-background">
+                <Container>
+                    <div className="mt-16 text-center max-w-lg mx-auto space-y-6">
+                        <h1 className="text-3xl font-bold text-primary">
+                            Join us to explore amazing posts! 🚀
+                        </h1>
+                        <p className="text-lg text-black">
+                            Login or sign up to unlock exclusive content and stay updated with the latest posts.
+                        </p>
+                    </div>
+                </Container>
+            </div>
+
         );
     }
 

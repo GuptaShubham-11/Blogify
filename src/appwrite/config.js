@@ -19,13 +19,13 @@ export class Service {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
-                slug,
+                userId,
                 {
                     title,
                     content,
                     featuredImage,
                     status,
-                    userId,
+                    userId
                 }
             );
         } catch (error) {

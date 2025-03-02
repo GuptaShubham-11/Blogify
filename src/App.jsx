@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import authService from "./appwrite/auth.js";
-import "./App.css";
 import { login, logout } from "./store/authSlice.js";
 import { Header, Footer, Loader } from "./components";
 import { Outlet } from "react-router-dom";
@@ -34,7 +33,7 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col bg-background text-text">
       <Header />
-      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <Outlet />
       </main>
       <Footer />

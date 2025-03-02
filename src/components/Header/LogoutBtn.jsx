@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import authService from "../../appwrite/auth";
 import { logout } from "../../store/authSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function LogoutBtn() {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     const logoutHandler = async () => {
         if (window.confirm("Are you sure you want to log out?")) {
@@ -15,6 +17,7 @@ export default function LogoutBtn() {
             try {
                 await authService.logout();
                 dispatch(logout());
+                navigate("/login");
             } catch (error) {
                 setError("Logout failed. Please try again.");
                 console.error("Logout failed:", error);
